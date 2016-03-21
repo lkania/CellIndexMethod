@@ -1,4 +1,7 @@
-function plotPositions(dynamicPath, neightboursPath, id)
+function plotPositions(dynamicPath, neightboursPath, id, outputFolder)
+
+cd(outputFolder);
+
 xLabel = "Particle X position";
 yLabel = "Particle Y position" ;
 strTitle = strcat ("All particles and particle [", num2str(id), "] neightbours");
@@ -26,5 +29,7 @@ plot(positions(:,1),positions(:,2),'o',positions(id,1),positions(id,2),'*r',posi
 xlabel(xLabel);
 ylabel(yLabel);
 title (strTitle);
+
+print -djpg plotPositions.jpg;
 
 endfunction

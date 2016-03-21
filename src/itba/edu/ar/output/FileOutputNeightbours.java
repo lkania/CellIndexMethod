@@ -12,21 +12,24 @@ import java.util.Set;
 
 import itba.edu.ar.cellIndexMethod.CellIndexMethodObserver;
 import itba.edu.ar.cellIndexMethod.data.particle.Particle;
+import itba.edu.ar.test.CellIndexMethodTestObserver;
 
-public class FileOutputNeightbours implements CellIndexMethodObserver {
+public class FileOutputNeightbours implements CellIndexMethodTestObserver {
 
-	private Path path;
+	private String pathFolder;
 	private List<Particle> particles;
+	private List<String> fileContent = new LinkedList<String>();
 
-	public FileOutputNeightbours(String path, List<Particle> particles) {
-		this.path = Paths.get(path);
-		this.particles = particles;
+	public FileOutputNeightbours(String path) {
+		this.pathFolder = path;
 	}
 
 	@Override
 	public void stepEnded(Map<Particle, Set<Particle>> allNeightbours) {
 
-		List<String> file = new LinkedList<String>();
+		if(!fileContent.isEmpty())
+			return;
+
 		StringBuilder sb = new StringBuilder();
 		for (Particle particle : particles) {
 			sb.append(particle.getId());
@@ -34,15 +37,10 @@ public class FileOutputNeightbours implements CellIndexMethodObserver {
 				for (Particle neightbour : allNeightbours.get(particle))
 					sb.append("," + neightbour.getId());
 			}
-			file.add(sb.toString());
+			fileContent.add(sb.toString());
 			sb = new StringBuilder();
 		}
 
-		try {
-			Files.write(path, file, Charset.forName("UTF-8"));
-		} catch (IOException e) {
-			throw new IllegalAccessError();
-		}
 
 	}
 
@@ -50,6 +48,21 @@ public class FileOutputNeightbours implements CellIndexMethodObserver {
 	public void stepStarted() {
 		// TODO Auto-generated method stub
 
+	}
+
+	@Override
+	public void cellQuantityStepFinished() {
+		try {
+			Files.write(Paths.get(pathFolder+"neightbours_"+particles.size()), fileContent, Charset.forName("UTF-8"));
+		} catch (IOException e) {
+			throw new IllegalAccessError();
+		}
+		fileContent.clear();
+	}
+
+	@Override
+	public void state(Integer cellQuantity, List<Particle> particles) {
+		this.particles = particles;
 	}
 
 }
