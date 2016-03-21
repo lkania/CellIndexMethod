@@ -1,6 +1,4 @@
-function plotSimulationTimes(stressTestPath,outputFolder)
-  
-  stressTestPath
+function plotSimulationTimes(stressTestPath, outputFolder)
   simulationTimes = dlmread(stressTestPath,' ',0,0);
 
   allCells=cell(19,2);
