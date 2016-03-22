@@ -8,6 +8,8 @@ case $action in
 		echo "length radio timeStep interactionRadio timesPerSimulation fromParticleQuantity toParticleQuantity outputTestPath"
 		read length radio timeStep interactionRadio timesPerSimulation fromParticleQuantity toParticleQuantity outputTestPath
 		outputTestPath="$outputTestPath/testFiles/"
+		outputTestPath=`readlink -m "$outputTestPath"`
+		outputTestPath="$outputTestPath/"
 		java -jar target/cellIndexMethod.jar $length $radio $timeStep $interactionRadio $timesPerSimulation $fromParticleQuantity $toParticleQuantity $outputTestPath
 		;;
 	2 )
@@ -15,8 +17,8 @@ case $action in
 		echo "stressTestPath fromParticleQuantity toParticleQuantity length interactionRadio radio outputImagesPath"
 		read stressTestPath fromParticleQuantity toParticleQuantity length interactionRadio radio outputImagesPath
 		outputImagesPath="$outputImagesPath/images/"
-		outputImagesPath=`cd "$outputImagesPath"; pwd`
-		stressTestPath=`cd "$stressTestPath"; pwd`
+		outputImagesPath=`readlink -m "$outputImagesPath"`
+		stressTestPath=`readlink -m "$stressTestPath"`
 		echo $outputImagesPath
 		cd src/
 		octave -q --eval "plotCellsVTime('$stressTestPath',$fromParticleQuantity:100:$toParticleQuantity, $length, $interactionRadio,$radio, '$outputImagesPath')"
@@ -26,16 +28,20 @@ case $action in
 		echo "stressTestPath cellQuantity length interactionRadio radio outputImagesPath"
 		read stressTestPath cellQuantity length interactionRadio radio outputImagesPath
 		outputImagesPath="$outputImagesPath/images/"
-		outputImagesPath=`cd "$outputImagesPath"; pwd`
+		outputImagesPath=`readlink -m "$outputImagesPath"`
+		stressTestPath=`readlink -m "$stressTestPath"`
 		cd src/
 		octave -q --eval "plotParticlesVTime('$stressTestPath',1:1:$cellQuantity, $length, $interactionRadio,$radio,'$outputImagesPath')"
 		;;
 	4 )
 		mkdir images
-		echo "plotPositions dynamicPath neightboursPath particleId outputImagesPath"
-		read plotPositions dynamicPath neightboursPath particleId outputImagesPath
+		echo "dynamicPath neightboursPath particleId outputImagesPath"
+		read dynamicPath neightboursPath particleId outputImagesPath
 		outputImagesPath="$outputImagesPath/images/"
-		outputImagesPath=`cd "$outputImagesPath"; pwd`
+		outputImagesPath=`readlink -m "$outputImagesPath"`
+		dynamicPath=`readlink -m "$dynamicPath"`
+		neightboursPath=`readlink -m "$neightboursPath"`
+
 		cd src/
 		octave -q --eval "plotPositions('$dynamicPath', '$neightboursPath', $particleId,'$outputImagesPath')"
 		;;
