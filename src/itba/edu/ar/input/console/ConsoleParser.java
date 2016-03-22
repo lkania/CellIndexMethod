@@ -13,11 +13,13 @@ public class ConsoleParser {
 		int timeStep = Integer.valueOf(args[2]);
 		float interactionRadio = Float.valueOf(args[3]);
 		int timesPerSimulation = Integer.valueOf(args[4]);
-		String path = args[5];
+		int fromParticleQuantity = Integer.valueOf(args[5]);
+		int toParticleQuantity = Integer.valueOf(args[6]);
+		String path = args[7];
 		
 		System.out.println(path);
 
-		Test test = new Test(length, radio, timeStep, interactionRadio, timesPerSimulation,path);
+		Test test = new Test(length, radio, timeStep, interactionRadio, timesPerSimulation,fromParticleQuantity,toParticleQuantity,path);
 		test.executeTest();
 	}
 
