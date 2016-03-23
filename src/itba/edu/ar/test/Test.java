@@ -33,7 +33,7 @@ public class Test {
 		this.interactionRadio = interactionRadio;
 		this.timesPerSimulation = timesPerSimulation;
 		particleQuantities = getIntegerListPlusStep(fromParticleQuantity, toParticleQuantity, stepParticleQuantity);
-		cellQuantities = getIntegerListPlusStep(1, getMaxCellQuantity(), 1);
+		cellQuantities = getIntegerListPlusStep(getMaxCellQuantity(), getMaxCellQuantity(), 1);
 	}
 
 	private int getMaxCellQuantity() {
@@ -46,11 +46,10 @@ public class Test {
 			CellIndexMethodFileGenerator cmfg = new CellIndexMethodFileGenerator(length, particleQuantity, radio, path,
 					timeStep);
 			cmfg.generate(staticPaths, dynamicPaths);
-
 		}
 
 		CellIndexMethodTest st = new CellIndexMethodTest(particleQuantities, cellQuantities, staticPaths, dynamicPaths,
-				timeStep, interactionRadio, timesPerSimulation);
+				timeStep, interactionRadio, timesPerSimulation, radio);
 
 		st.subscribe(new FileOutputStressTest(path + "stressTest"));
 		st.subscribe(new FileOutputNeightbours(path));

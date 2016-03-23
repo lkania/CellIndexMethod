@@ -12,20 +12,21 @@ public class CellIndexMethod {
 	private IndexMatrix matrix;
 	private Route route;
 	private float interactionRadio;
+	private float radio;
 	private List<CellIndexMethodObserver> subscribers = new LinkedList<CellIndexMethodObserver>();
 
-	public CellIndexMethod(IndexMatrix matrix, Route route, float interactionRadio) {
+	public CellIndexMethod(IndexMatrix matrix, Route route, float interactionRadio,float radio) {
 		this.matrix = matrix;
 		this.route = route;
 		this.interactionRadio = interactionRadio;
-
+		this.radio=radio;
 		if (!satisfyConstraint())
 			throw new IllegalStateException();
 
 	}
 
 	private boolean satisfyConstraint() {
-		return matrix.getLength() / matrix.getCellQuantity() > interactionRadio;
+		return (matrix.getLength() / matrix.getCellQuantity()-2*radio) > interactionRadio;
 	}
 
 	public void execute() {

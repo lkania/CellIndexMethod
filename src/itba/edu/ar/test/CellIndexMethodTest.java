@@ -24,10 +24,11 @@ public class CellIndexMethodTest {
 	private float interactionRadio;
 	private int timesPerSimulation;
 	private List<CellIndexMethodTestObserver> subscribers = new LinkedList<CellIndexMethodTestObserver>();
+	private float radio;
 
 	public CellIndexMethodTest(List<Integer> particleQuantities, List<Integer> cellQuantities,
 			List<String> staticFilePaths, List<String> dynamicFilePaths, int timeStep, float interactionRadio,
-			int timesPerSimulation) {
+			int timesPerSimulation,float radio) {
 		super();
 		this.particleQuantities = particleQuantities;
 		this.cellQuantities = cellQuantities;
@@ -36,6 +37,7 @@ public class CellIndexMethodTest {
 		this.timeStep = timeStep;
 		this.interactionRadio = interactionRadio;
 		this.timesPerSimulation = timesPerSimulation;
+		this.radio=radio;
 	}
 
 	public void start() throws InstantiationException, IllegalAccessException, IOException {
@@ -52,7 +54,7 @@ public class CellIndexMethodTest {
 				notifyState(cellQuantity, indexMatrix.getParticles());
 
 				CellIndexMethod cellIndexMethod = new CellIndexMethod(indexMatrix, getRoute(cellQuantity, timeStep),
-						interactionRadio);
+						interactionRadio,radio);
 
 				subscribeSubscribers(cellIndexMethod);
 
