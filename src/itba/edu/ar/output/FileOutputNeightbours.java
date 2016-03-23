@@ -40,6 +40,8 @@ public class FileOutputNeightbours implements CellIndexMethodTestObserver {
 			fileContent.add(sb.toString());
 			sb = new StringBuilder();
 		}
+		
+		particles=null;
 
 
 	}
@@ -63,6 +65,12 @@ public class FileOutputNeightbours implements CellIndexMethodTestObserver {
 	@Override
 	public void state(Integer cellQuantity, List<Particle> particles) {
 		this.particles = particles;
+	}
+
+	@Override
+	public void endOfSimulation() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

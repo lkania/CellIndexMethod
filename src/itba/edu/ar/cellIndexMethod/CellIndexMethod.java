@@ -68,6 +68,10 @@ public class CellIndexMethod {
 		subscribers.add(subscriber);
 	}
 
+	public void unsubscribe(CellIndexMethodObserver subscriber) {
+		subscribers.remove(subscriber);
+	}
+
 
 	
 }

@@ -18,7 +18,6 @@ public class CellIndexMethodTest {
 
 	private List<Integer> particleQuantities;
 	private List<Integer> cellQuantities;
-	private String stressFilePath;
 	private List<String> staticFilePaths;
 	private List<String> dynamicFilePaths;
 	private int timeStep;
@@ -26,83 +25,83 @@ public class CellIndexMethodTest {
 	private int timesPerSimulation;
 	private List<CellIndexMethodTestObserver> subscribers = new LinkedList<CellIndexMethodTestObserver>();
 
-	
-	public CellIndexMethodTest(List<Integer> particleQuantities, List<Integer> cellQuantities, String stressFilePath, List<String> staticFilePaths,
-			List<String> dynamicFilePaths, int timeStep, float interactionRadio, int timesPerSimulation) {
+	public CellIndexMethodTest(List<Integer> particleQuantities, List<Integer> cellQuantities,
+			List<String> staticFilePaths, List<String> dynamicFilePaths, int timeStep, float interactionRadio,
+			int timesPerSimulation) {
 		super();
 		this.particleQuantities = particleQuantities;
 		this.cellQuantities = cellQuantities;
-		this.stressFilePath = stressFilePath;
 		this.staticFilePaths = staticFilePaths;
 		this.dynamicFilePaths = dynamicFilePaths;
 		this.timeStep = timeStep;
 		this.interactionRadio = interactionRadio;
 		this.timesPerSimulation = timesPerSimulation;
 	}
-	
+
 	public void start() throws InstantiationException, IllegalAccessException, IOException {
 
-		FileOutputStressTest st = new FileOutputStressTest(stressFilePath);
-
 		for (Integer particleQuantity : particleQuantities) {
-			
-			
-			System.out.println("Particle quantity: "+particleQuantity);
-			
+
 			String staticPath = getStatic();
 			String dynamicPath = getDynamic();
-			
+
 			for (Integer cellQuantity : cellQuantities) {
-				System.out.print("\tCell quantity "+cellQuantity);
-				
-				st.reset(cellQuantity, particleQuantity);
+
 				IndexMatrix indexMatrix = IndexMatrixBuilder.getIndexMatrix(staticPath, dynamicPath, cellQuantity,
 						timeStep);
-				
-				notifyState(cellQuantity,indexMatrix.getParticles());
-				
-				CellIndexMethod cellIndexMethod = new CellIndexMethod(indexMatrix, getRoute(cellQuantity,timeStep), interactionRadio);
+				notifyState(cellQuantity, indexMatrix.getParticles());
+
+				CellIndexMethod cellIndexMethod = new CellIndexMethod(indexMatrix, getRoute(cellQuantity, timeStep),
+						interactionRadio);
 
 				subscribeSubscribers(cellIndexMethod);
-				cellIndexMethod.subscribe(st);
-				
-				for(int i=0;i<timesPerSimulation;i++)
+
+				for (int i = 0; i < timesPerSimulation; i++)
 					cellIndexMethod.execute();
-				
-				System.out.println("\tSimulation Time: "+st.getSimulationTime());
-				st.endSimulation();
-				
+
+				unsubscribeSubscribers(cellIndexMethod);
+
 				notifyCellQuantityStepFinished();
 
 			}
+
 		}
 
-		st.writeToFile();
+		notifyEndofSimulation();
 
 	}
-	
-	public void subscribe(CellIndexMethodTestObserver subscriber){
+
+	private void notifyEndofSimulation() {
+		for (CellIndexMethodTestObserver subscriber : subscribers)
+			subscriber.endOfSimulation();
+	}
+
+	private void unsubscribeSubscribers(CellIndexMethod cellIndexMethod) {
+		for (CellIndexMethodTestObserver subscriber : subscribers)
+			cellIndexMethod.unsubscribe(subscriber);
+	}
+
+	public void subscribe(CellIndexMethodTestObserver subscriber) {
 		subscribers.add(subscriber);
 	}
 
 	private void notifyCellQuantityStepFinished() {
-		for(CellIndexMethodTestObserver subscriber : subscribers)
+		for (CellIndexMethodTestObserver subscriber : subscribers)
 			subscriber.cellQuantityStepFinished();
 	}
 
 	private void subscribeSubscribers(CellIndexMethod cellIndexMethod) {
-		for(CellIndexMethodTestObserver subscriber : subscribers)
+		for (CellIndexMethodTestObserver subscriber : subscribers)
 			cellIndexMethod.subscribe(subscriber);
 	}
 
 	private void notifyState(Integer cellQuantity, List<Particle> particles) {
-		for(CellIndexMethodTestObserver subscriber : subscribers)
-			subscriber.state(cellQuantity,particles);
+		for (CellIndexMethodTestObserver subscriber : subscribers)
+			subscriber.state(cellQuantity, particles);
 	}
 
 	private static Route getRoute(int cellQuantity, int timeStep) {
-		return (cellQuantity == 1) ? new BruteForceRoute(timeStep)
-				: new OptimizedRoute(cellQuantity, true, timeStep);
+		return (cellQuantity == 1) ? new BruteForceRoute(timeStep) : new OptimizedRoute(cellQuantity, true, timeStep);
 
 	}
 
@@ -118,5 +117,4 @@ public class CellIndexMethodTest {
 		return path;
 	}
 
-	
 }

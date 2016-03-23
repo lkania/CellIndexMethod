@@ -10,10 +10,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import itba.edu.ar.cellIndexMethod.CellIndexMethodObserver;
 import itba.edu.ar.cellIndexMethod.data.particle.Particle;
+import itba.edu.ar.test.CellIndexMethodTestObserver;
 
-public class FileOutputStressTest implements CellIndexMethodObserver {
+public class FileOutputStressTest implements CellIndexMethodTestObserver {
 
 	private String tag = "";
 	private Path path;
@@ -30,18 +30,11 @@ public class FileOutputStressTest implements CellIndexMethodObserver {
 		this.path = Paths.get(path);
 		this.cellQuantity = cellQuantity;
 		this.particleQuantity = particleQuantity;
-		this.tag=tag;
+		this.tag = tag;
 	}
 
 	public FileOutputStressTest(String stressFilePath) {
-		this(stressFilePath,0,0,"");
-	}
-
-	public void reset(int cellQuantity,int particlequantity) {
-		this.cellQuantity=cellQuantity;
-		this.particleQuantity=particlequantity;
-		averageSimulationTime=0;
-		simulationsQuantity=0;
+		this(stressFilePath, 0, 0, "");
 	}
 
 	@Override
@@ -55,15 +48,28 @@ public class FileOutputStressTest implements CellIndexMethodObserver {
 		startSimulationTime = System.nanoTime();
 	}
 
-	public void endSimulation() {
-		simulationTimes.add(new SimulationTime(getSimulationTime(), tag, cellQuantity, particleQuantity));
-	}
-
-	public float getSimulationTime() {
+	private float getSimulationTime() {
 		return averageSimulationTime / (simulationsQuantity * toMilliseconds);
 	}
 
-	public void writeToFile() {
+	@Override
+	public void cellQuantityStepFinished() {
+		float simulationTime = getSimulationTime();
+		simulationTimes.add(new SimulationTime(simulationTime, tag, cellQuantity, particleQuantity));
+		System.out.println("\tSimulation Time: " + simulationTime);
+	}
+
+	@Override
+	public void state(Integer cellQuantity, List<Particle> particles) {
+		System.out.print("Particle quantity "+particles.size()+"\tCell quantity " + cellQuantity);
+		this.cellQuantity = cellQuantity;
+		this.particleQuantity = particles.size();
+		averageSimulationTime = 0;
+		simulationsQuantity = 0;
+	}
+
+	@Override
+	public void endOfSimulation() {
 		List<String> file = new LinkedList<String>();
 
 		for (SimulationTime st : simulationTimes) {
