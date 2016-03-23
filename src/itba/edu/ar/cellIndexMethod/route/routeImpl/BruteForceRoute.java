@@ -10,16 +10,21 @@ import itba.edu.ar.cellIndexMethod.route.Route;
 public class BruteForceRoute implements Route{
 
 	private float timeStep;
-
-	public BruteForceRoute(float timeStep) {
+	private float length;
+	private int cellQuantity;
+		
+	public BruteForceRoute(float timeStep, float length, int cellQuantity) {
+		super();
 		this.timeStep = timeStep;
+		this.length = length;
+		this.cellQuantity = cellQuantity;
 	}
 
 	@Override
 	public void fillNeightbours(int x, int y, IndexMatrix matrix, Particle particle, float interactionRadio) {
 			Point position = getPosition(x, y);
 			Cell cell = matrix.getCell(position);
-			particle.fillNeightbours(cell.getParticles(), interactionRadio,timeStep);
+			particle.fillNeightbours(cell.getParticles(), interactionRadio,timeStep, false, length, cellQuantity);
 	}
 
 	private Point getPosition(int x, int y) {

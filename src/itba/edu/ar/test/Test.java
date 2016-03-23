@@ -33,7 +33,7 @@ public class Test {
 		this.interactionRadio = interactionRadio;
 		this.timesPerSimulation = timesPerSimulation;
 		particleQuantities = getIntegerListPlusStep(fromParticleQuantity, toParticleQuantity, stepParticleQuantity);
-		cellQuantities = getIntegerListPlusStep(getMaxCellQuantity(), getMaxCellQuantity(), 1);
+		cellQuantities = getIntegerListPlusStep(1, getMaxCellQuantity(), 1);
 	}
 
 	private int getMaxCellQuantity() {

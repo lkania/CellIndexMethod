@@ -8,7 +8,6 @@ case $action in
 		echo "length radio timeStep interactionRadio timesPerSimulation fromParticleQuantity stepParticleQuantity toParticleQuantity outputTestPath"
 		read length radio timeStep interactionRadio timesPerSimulation fromParticleQuantity stepParticleQuantity toParticleQuantity outputTestPath
 		outputTestPath="$outputTestPath/testFiles/"
-		outputTestPath=`readlink -m "$outputTestPath"`
 		outputTestPath="$outputTestPath/"
 
 		if [ "$(expr substr $(uname -s) 1 9)" == "CYGWIN_NT" ]; then
@@ -22,11 +21,9 @@ case $action in
 		echo "stressTestPath fromParticleQuantity toParticleQuantity length interactionRadio radio outputImagesPath"
 		read stressTestPath fromParticleQuantity toParticleQuantity length interactionRadio radio outputImagesPath
 		outputImagesPath="$outputImagesPath/images/"
-		outputImagesPath=`readlink -m "$outputImagesPath"`
-		stressTestPath=`readlink -m "$stressTestPath"`
 		echo $outputImagesPath
 		cd src/
-		octave -q --eval "plotCellsVTime('$stressTestPath',$fromParticleQuantity:100:$toParticleQuantity, $length, $interactionRadio,$radio, '$outputImagesPath')"
+		octave -q --eval "plotCellsVTime('$stressTestPath',$fromParticleQuantity:1000:$toParticleQuantity, $length, $interactionRadio,$radio, '$outputImagesPath')"
 		;;
 	3 )
 		mkdir -p images
