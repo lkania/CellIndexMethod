@@ -25,7 +25,7 @@ public class FileOutputNeightbours implements CellIndexMethodTestObserver {
 	}
 
 	@Override
-	public void stepEnded(Map<Particle, Set<Particle>> allNeightbours) {
+	public void stepEnded() {
 
 		if(!fileContent.isEmpty())
 			return;
@@ -33,15 +33,14 @@ public class FileOutputNeightbours implements CellIndexMethodTestObserver {
 		StringBuilder sb = new StringBuilder();
 		for (Particle particle : particles) {
 			sb.append(particle.getId());
-			if (allNeightbours.containsKey(particle)) {
-				for (Particle neightbour : allNeightbours.get(particle))
+			Set<Particle> neightbours = particle.getNeightbours();
+			if (!neightbours.isEmpty()) {
+				for (Particle neightbour : neightbours)
 					sb.append("," + neightbour.getId());
 			}
 			fileContent.add(sb.toString());
 			sb = new StringBuilder();
 		}
-
-
 	}
 
 	@Override
@@ -63,6 +62,12 @@ public class FileOutputNeightbours implements CellIndexMethodTestObserver {
 	@Override
 	public void state(Integer cellQuantity, List<Particle> particles) {
 		this.particles = particles;
+	}
+
+	@Override
+	public void endOfSimulation() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

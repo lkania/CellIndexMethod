@@ -1,18 +1,15 @@
 package itba.edu.ar.cellIndexMethod.route.routeImpl;
 
 import java.awt.Point;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 import itba.edu.ar.cellIndexMethod.IndexMatrix;
 import itba.edu.ar.cellIndexMethod.data.Cell;
 import itba.edu.ar.cellIndexMethod.data.particle.Particle;
-import itba.edu.ar.cellIndexMethod.data.particle.ParticleObserver;
+import itba.edu.ar.cellIndexMethod.route.Route;
 
-public class OptimizedRoute extends AbstractRoute {
+public class OptimizedRoute implements Route {
 
 	private static List<Point> cellNeighbours;
 	private int cellQuantity;
@@ -41,9 +38,7 @@ public class OptimizedRoute extends AbstractRoute {
 
 			if (position != null) {
 				Cell cell = matrix.getCell(position);
-				particle.subscribe(this);
-				particle.getNeightbours(cell.getParticles(), interactionRadio, timeStep);
-				particle.unsubscribe(this);
+				particle.fillNeightbours(cell.getParticles(), interactionRadio, timeStep);
 			}
 		}
 	}
@@ -60,13 +55,7 @@ public class OptimizedRoute extends AbstractRoute {
 		return (matrix.insideBoundaries(newX, newY)) ? new Point(newX, newY) : null;
 	}
 
-	@Override
-	public void neighbour(Particle particle1, Particle particle2) {
-		maybeAddEntry(particle1);
-		maybeAddEntry(particle2);
-		allNeightbours.get(particle1).add(particle2);
-		allNeightbours.get(particle2).add(particle1);
-	}
+
 
 
 }
