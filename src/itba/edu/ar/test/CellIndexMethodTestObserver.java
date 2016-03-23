@@ -7,13 +7,10 @@ import itba.edu.ar.cellIndexMethod.data.particle.Particle;
 
 public interface CellIndexMethodTestObserver extends CellIndexMethodObserver {
 
-	
 	void cellQuantityStepFinished();
 
 	void state(Integer cellQuantity, List<Particle> particles);
 
 	void endOfSimulation();
-	
-	
 
 }

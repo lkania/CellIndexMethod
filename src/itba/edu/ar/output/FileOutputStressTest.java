@@ -15,7 +15,6 @@ import itba.edu.ar.test.CellIndexMethodTestObserver;
 
 public class FileOutputStressTest implements CellIndexMethodTestObserver {
 
-	private String tag = "";
 	private Path path;
 	private int cellQuantity;
 	private int particleQuantity;
@@ -25,20 +24,19 @@ public class FileOutputStressTest implements CellIndexMethodTestObserver {
 	private int simulationsQuantity;
 	private static float toMilliseconds = (float) Math.pow(10, 6);
 
-	public FileOutputStressTest(String path, int cellQuantity, int particleQuantity, String tag) {
+	public FileOutputStressTest(String path, int cellQuantity, int particleQuantity) {
 		super();
 		this.path = Paths.get(path);
 		this.cellQuantity = cellQuantity;
 		this.particleQuantity = particleQuantity;
-		this.tag = tag;
 	}
 
 	public FileOutputStressTest(String stressFilePath) {
-		this(stressFilePath, 0, 0, "");
+		this(stressFilePath, 0, 0);
 	}
 
 	@Override
-	public void stepEnded(Map<Particle, Set<Particle>> allNeightbours) {
+	public void stepEnded() {
 		averageSimulationTime += System.nanoTime() - startSimulationTime;
 		simulationsQuantity++;
 	}
@@ -55,7 +53,7 @@ public class FileOutputStressTest implements CellIndexMethodTestObserver {
 	@Override
 	public void cellQuantityStepFinished() {
 		float simulationTime = getSimulationTime();
-		simulationTimes.add(new SimulationTime(simulationTime, tag, cellQuantity, particleQuantity));
+		simulationTimes.add(new SimulationTime(simulationTime, cellQuantity, particleQuantity));
 		System.out.println("\tSimulation Time: " + simulationTime);
 	}
 
@@ -85,14 +83,12 @@ public class FileOutputStressTest implements CellIndexMethodTestObserver {
 
 	private class SimulationTime {
 		private float averageSimulationTime;
-		private String tag;
 		private int cellQuantity;
 		private int particleQuantity;
 
-		public SimulationTime(float averageSimulationTime, String tag, int cellQuantity, int particleQuantity) {
+		public SimulationTime(float averageSimulationTime, int cellQuantity, int particleQuantity) {
 			super();
 			this.averageSimulationTime = averageSimulationTime;
-			this.tag = tag;
 			this.cellQuantity = cellQuantity;
 			this.particleQuantity = particleQuantity;
 		}
@@ -101,7 +97,7 @@ public class FileOutputStressTest implements CellIndexMethodTestObserver {
 		public String toString() {
 			StringBuilder sb = new StringBuilder();
 			return sb.append(cellQuantity).append(" ").append(particleQuantity).append(" ")
-					.append(averageSimulationTime).append(" ").append(tag).toString();
+					.append(averageSimulationTime).append(" ").toString();
 		}
 
 	}

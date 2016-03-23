@@ -56,8 +56,10 @@ public class CellIndexMethodTest {
 
 				subscribeSubscribers(cellIndexMethod);
 
-				for (int i = 0; i < timesPerSimulation; i++)
+				for (int i = 0; i < timesPerSimulation; i++) {
 					cellIndexMethod.execute();
+					cellIndexMethod.reset();
+				}
 
 				unsubscribeSubscribers(cellIndexMethod);
 

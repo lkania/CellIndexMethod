@@ -66,4 +66,9 @@ public class IndexMatrix {
 		return matrix.insideBoundaries(x, y);
 	}
 
+	public void reset() {
+		for(Particle particle : particles)
+			particle.resetNeightbours();
+	}
+
 }

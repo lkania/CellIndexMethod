@@ -1,11 +1,11 @@
 package itba.edu.ar.cellIndexMethod.data.particle;
 
-import java.awt.Point;
-import java.awt.geom.Point2D;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class Particle {
 
@@ -16,7 +16,7 @@ public class Particle {
 	private float color;
 	private float radio;
 	private float velocity;
-	private List<ParticleObserver> subscribers = new LinkedList<ParticleObserver>();
+	private Set<Particle> neightbours = new HashSet<Particle>();  
 	
 	public Particle(int id, float radio, float color) {
 		super();
@@ -37,23 +37,22 @@ public class Particle {
 		return radio;
 	}
 
-	public void getNeightbours(List<Particle> particles, float interactionRadio, float timeStep) {
+	public void fillNeightbours(List<Particle> particles, float interactionRadio, float timeStep) {
 
 		for (Particle particle : particles)
 			if (isNeightbour(particle, interactionRadio, timeStep))
 			{
-				notifyNeightbour(particle);
+				addNeightbour(particle);
+				particle.addNeightbour(this);
 			}
-
 	}
 
-	private void notifyNeightbour(Particle particle) {
-		for(ParticleObserver subscriber : subscribers)
-			subscriber.neighbour(this, particle);
+	public Set<Particle> getNeightbours(){
+		return neightbours;
 	}
-	
-	public void subscribe(ParticleObserver susbcriber){
-		subscribers.add(susbcriber);
+
+	private void addNeightbour(Particle particle) {
+		neightbours.add(particle);
 	}
 
 	public boolean isNeightbour(Particle particle, float interactionRadio,float timeStep) {
@@ -122,9 +121,10 @@ public class Particle {
 		return id;
 	}
 
-	public void unsubscribe(ParticleObserver subscriber) {
-		subscribers.remove(subscriber);
+	public void resetNeightbours() {
+		neightbours.clear();
 	}
+
 
 		
 	

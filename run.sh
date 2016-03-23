@@ -15,7 +15,7 @@ case $action in
 				outputTestPath="$(cygpath -w $outputTestPath)"
 		fi
 
-		java -Xmx256m -jar target/cellIndexMethod.jar $length $radio $timeStep $interactionRadio $timesPerSimulation $fromParticleQuantity $stepParticleQuantity $toParticleQuantity $outputTestPath
+		java -Xmx1024m -Xms256m -jar target/cellIndexMethod.jar $length $radio $timeStep $interactionRadio $timesPerSimulation $fromParticleQuantity $stepParticleQuantity $toParticleQuantity $outputTestPath
 		;;
 	2 )
 		mkdir -p images
