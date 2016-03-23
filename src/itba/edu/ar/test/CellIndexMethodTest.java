@@ -21,6 +21,7 @@ public class CellIndexMethodTest {
 	private String stressFilePath;
 	private List<String> staticFilePaths;
 	private List<String> dynamicFilePaths;
+	private boolean periodicBoundaries;
 	private int timeStep;
 	private float interactionRadio;
 	private int timesPerSimulation;
@@ -28,7 +29,7 @@ public class CellIndexMethodTest {
 
 	
 	public CellIndexMethodTest(List<Integer> particleQuantities, List<Integer> cellQuantities, String stressFilePath, List<String> staticFilePaths,
-			List<String> dynamicFilePaths, int timeStep, float interactionRadio, int timesPerSimulation) {
+			List<String> dynamicFilePaths, int timeStep, float interactionRadio, int timesPerSimulation, boolean periodicBoundaries) {
 		super();
 		this.particleQuantities = particleQuantities;
 		this.cellQuantities = cellQuantities;
@@ -38,6 +39,7 @@ public class CellIndexMethodTest {
 		this.timeStep = timeStep;
 		this.interactionRadio = interactionRadio;
 		this.timesPerSimulation = timesPerSimulation;
+		this.periodicBoundaries=periodicBoundaries;
 	}
 	
 	public void start() throws InstantiationException, IllegalAccessException, IOException {
@@ -61,7 +63,7 @@ public class CellIndexMethodTest {
 				
 				notifyState(cellQuantity,indexMatrix.getParticles());
 				
-				CellIndexMethod cellIndexMethod = new CellIndexMethod(indexMatrix, getRoute(cellQuantity,timeStep), interactionRadio);
+				CellIndexMethod cellIndexMethod = new CellIndexMethod(indexMatrix, getRoute(cellQuantity,periodicBoundaries,timeStep), interactionRadio);
 
 				subscribeSubscribers(cellIndexMethod);
 				cellIndexMethod.subscribe(st);
@@ -100,9 +102,9 @@ public class CellIndexMethodTest {
 			subscriber.state(cellQuantity,particles);
 	}
 
-	private static Route getRoute(int cellQuantity, int timeStep) {
+	private static Route getRoute(int cellQuantity, boolean periodicBoundaries, int timeStep) {
 		return (cellQuantity == 1) ? new BruteForceRoute(timeStep)
-				: new OptimizedRoute(cellQuantity, true, timeStep);
+				: new OptimizedRoute(cellQuantity, periodicBoundaries, timeStep);
 
 	}
 

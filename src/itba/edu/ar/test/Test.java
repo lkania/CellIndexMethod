@@ -18,12 +18,13 @@ public class Test {
 	private int timeStep;
 	private float interactionRadio;
 	private int timesPerSimulation;
+	private boolean periodicBoundaries;
 
 	private List<Integer> particleQuantities;
 	private List<Integer> cellQuantities;
 
 	public Test(Float length, float radio, int timeStep, float interactionRadio, int timesPerSimulation,
-			int fromParticleQuantity, int toParticleQuantity, String path) {
+			int fromParticleQuantity, int toParticleQuantity, boolean periodicBoundaries, String path) {
 		super();
 		this.length = length;
 		this.path = path;
@@ -31,6 +32,7 @@ public class Test {
 		this.timeStep = timeStep;
 		this.interactionRadio = interactionRadio;
 		this.timesPerSimulation = timesPerSimulation;
+		this.periodicBoundaries=periodicBoundaries;
 		particleQuantities = getIntegerList(fromParticleQuantity, toParticleQuantity, 100);
 		cellQuantities = getIntegerList(1, getMaxCellQuantity(), 1);
 	}
@@ -49,7 +51,7 @@ public class Test {
 		}
 
 		CellIndexMethodTest st = new CellIndexMethodTest(particleQuantities, cellQuantities, path + "stressTest",
-				staticPaths, dynamicPaths, timeStep, interactionRadio, timesPerSimulation);
+				staticPaths, dynamicPaths, timeStep, interactionRadio, timesPerSimulation,periodicBoundaries);
 
 		st.subscribe(new FileOutputNeightbours(path));
 		st.start();

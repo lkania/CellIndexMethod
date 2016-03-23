@@ -5,12 +5,12 @@ read action
 case $action in 
 	1 )
 		mkdir testFiles
-		echo "length radio timeStep interactionRadio timesPerSimulation fromParticleQuantity toParticleQuantity outputTestPath"
-		read length radio timeStep interactionRadio timesPerSimulation fromParticleQuantity toParticleQuantity outputTestPath
+		echo "length radio timeStep interactionRadio timesPerSimulation fromParticleQuantity toParticleQuantity outputTestPath periodicBoundaries"
+		read length radio timeStep interactionRadio timesPerSimulation fromParticleQuantity toParticleQuantity outputTestPath periodicBoundaries
 		outputTestPath="$outputTestPath/testFiles/"
 		outputTestPath=`readlink -m "$outputTestPath"`
 		outputTestPath="$outputTestPath/"
-		java -jar target/cellIndexMethod.jar $length $radio $timeStep $interactionRadio $timesPerSimulation $fromParticleQuantity $toParticleQuantity $outputTestPath
+		java -jar target/cellIndexMethod.jar $length $radio $timeStep $interactionRadio $timesPerSimulation $fromParticleQuantity $toParticleQuantity $outputTestPath $periodicBoundaries
 		;;
 	2 )
 		mkdir images

@@ -16,10 +16,11 @@ public class ConsoleParser {
 		int fromParticleQuantity = Integer.valueOf(args[5]);
 		int toParticleQuantity = Integer.valueOf(args[6]);
 		String path = args[7];
+		boolean periodicBoundaries=Boolean.parseBoolean(args[8]);
 		
 		System.out.println(path);
 
-		Test test = new Test(length, radio, timeStep, interactionRadio, timesPerSimulation,fromParticleQuantity,toParticleQuantity,path);
+		Test test = new Test(length, radio, timeStep, interactionRadio, timesPerSimulation,fromParticleQuantity,toParticleQuantity,periodicBoundaries,path);
 		test.executeTest();
 	}
 
