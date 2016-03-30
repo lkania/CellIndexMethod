@@ -9,7 +9,7 @@ import java.util.List;
 
 public class DynamicFileGenerator {
 
-	public static void generate(List<String> dynamicPaths, String path, int times, Float length, int particleQuantity) {
+	public static void generate(List<String> dynamicPaths, String path, int times, double length, int particleQuantity) {
 		List<String> file = new LinkedList<String>();
 		times++;
 
@@ -30,7 +30,7 @@ public class DynamicFileGenerator {
 
 	}
 
-	private static float getRandom(Float length) {
+	private static float getRandom(double length) {
 		return (float) (Math.random() * length);
 	}
 

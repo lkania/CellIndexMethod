@@ -1,21 +1,18 @@
 package itba.edu.ar.cellIndexMethod.data.particle;
 
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 public class Particle {
 
 	private int id;
 
-	private Map<Float, ParticleState> states = new HashMap<Float, ParticleState>();
+	private ParticleState state = new ParticleState();
 
 	private float color;
 	private float radio;
-	private float velocity;
+
 	private Set<Particle> neightbours = new HashSet<Particle>();
 
 	public Particle(int id, float radio, float color) {
@@ -25,8 +22,8 @@ public class Particle {
 		this.radio = radio;
 	}
 
-	public FloatPoint getPosition(float timeStep) {
-		return states.get(timeStep).getPosition();
+	public FloatPoint getPosition() {
+		return state.getPosition();
 	}
 
 	public float getColor() {
@@ -37,10 +34,10 @@ public class Particle {
 		return radio;
 	}
 
-	public void fillNeightbours(List<Particle> particles, float interactionRadio, float timeStep,boolean periodic,float length,int cellQuantity) {
+	public void fillNeightbours(List<Particle> particles, float interactionRadio,boolean periodic,double length,int cellQuantity) {
 
 		for (Particle particle : particles)
-			if (isNeightbour(particle, interactionRadio, timeStep,periodic,length,cellQuantity)) {
+			if (isNeightbour(particle, interactionRadio,periodic,length,cellQuantity)) {
 				addNeightbour(particle);
 				particle.addNeightbour(this);
 			}
@@ -54,19 +51,19 @@ public class Particle {
 		neightbours.add(particle);
 	}
 
-	public boolean isNeightbour(Particle particle, float interactionRadio, float timeStep, boolean periodic,
-			float length, int cellQuantity) {
+	public boolean isNeightbour(Particle particle, float interactionRadio, boolean periodic,
+			double length, int cellQuantity) {
 		return !this.equals(particle)
-				&& (distance(getPosition(timeStep), particle.getPosition(timeStep), length, periodic, cellQuantity)
+				&& (distance(getPosition(), particle.getPosition(), length, periodic, cellQuantity)
 						- getRadio() - particle.getRadio()) < interactionRadio;
 	}
 
-	private double distance(FloatPoint p1, FloatPoint p2, float length, boolean periodic, int cellQuantity) {
+	private double distance(FloatPoint p1, FloatPoint p2, double length, boolean periodic, int cellQuantity) {
 
 		double distanceX = Math.abs(p1.getX() - p2.getX());
 		double distanceY = Math.abs(p1.getY() - p2.getY());
-		float lengthX = 0;
-		float lengthY = 0;
+		double lengthX = 0;
+		double lengthY = 0;
 
 		if (periodic) {
 			if (distanceX > length / cellQuantity)
@@ -81,17 +78,7 @@ public class Particle {
 		return distance;
 	}
 
-	public float getVelocity() {
-		return velocity;
-	}
-
-	public void setVelocity(float velocity) {
-		this.velocity = velocity;
-	}
-
-	public void addParticleState(float x, float y, float velocityX, float velocityY, float timeStep) {
-		states.put(timeStep, new ParticleState(x, y, velocityX, velocityY));
-	}
+	
 
 	@Override
 	public int hashCode() {
@@ -115,31 +102,38 @@ public class Particle {
 		return true;
 	}
 
-	public void addPosition(float x, float y, float timeStep) {
-		if (!states.containsKey(timeStep)) {
-			addParticleState(x, y, 0, 0, timeStep);
-			return;
-		}
-
-		states.get(timeStep).setPosition(x, y);
-	}
-
-	public void addVelocity(float velocityX, float velocityY, float timeStep) {
-		if (!states.containsKey(timeStep)) {
-			addParticleState(0, 0, velocityX, velocityY, timeStep);
-			return;
-		}
-
-		states.get(timeStep).setVelocity(velocityX, velocityY);
-		;
-	}
-
 	public int getId() {
 		return id;
 	}
 
 	public void resetNeightbours() {
 		neightbours.clear();
+	}
+
+	public double getAngle() {
+		return state.getAngle();
+	}
+
+	public double getVelocityAbs() {
+		return state.getVelocityAbs();
+	}
+
+	public void setPosition(FloatPoint newPosition) {
+		state.setPosition(newPosition);
+		
+	}
+
+	public void setAngle(Double angle) {
+		state.setAngle(angle);
+	}
+
+	public void setPosition(double x, double y) {
+		state.setPosition(new FloatPoint(x,y));
+		
+	}
+
+	public void setVelocityAbs(double vx, double vy) {
+		state.setVelocityAbs(Math.hypot(vx, vy));
 	}
 
 }

@@ -4,13 +4,13 @@ import java.util.List;
 
 public class CellIndexMethodFileGenerator {
 
-	private Float length;
+	private double length;
 	private int particleQuantity;
 	private float radio;
 	private String path;
 	private int times;
 
-	public CellIndexMethodFileGenerator(Float length, int particleQuantity, float radio, String path, int times) {
+	public CellIndexMethodFileGenerator(double length, int particleQuantity, float radio, String path, int times) {
 		super();
 		this.length = length;
 		this.particleQuantity = particleQuantity;
@@ -23,5 +23,7 @@ public class CellIndexMethodFileGenerator {
 		StaticFileGenerator.generate(staticPaths,length, particleQuantity, radio, path);
 		DynamicFileGenerator.generate(dynamicPaths,path, times, length, particleQuantity);
 	}
+	
+	
 
 }

@@ -12,10 +12,10 @@ public class StaticFileGenerator {
 
 
 
-	public static void generate(List<String> staticPaths, Float length, int particleQuantity, float radio, String path) {
+	public static void generate(List<String> staticPaths, double length, int particleQuantity, float radio, String path) {
 		List<String> file = new LinkedList<String>();
 		file.add(particleQuantity+"");
-		file.add(length.toString());
+		file.add(length+"");
 
 		for (int i = 0; i < particleQuantity; i++) {
 			file.add(radio + " " + 1);

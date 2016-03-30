@@ -105,7 +105,7 @@ public class CellIndexMethodTest {
 	}
 
 	private static Route getRoute(int cellQuantity, int timeStep,float length) {
-		return (cellQuantity == 1) ? new BruteForceRoute(timeStep,length,cellQuantity) : new OptimizedRoute(cellQuantity, true, timeStep,length);
+		return (cellQuantity == 1) ? new BruteForceRoute(timeStep,length,cellQuantity) : new OptimizedRoute(cellQuantity, true,length);
 
 	}
 

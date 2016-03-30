@@ -14,8 +14,7 @@ public class OptimizedRoute implements Route {
 	private static List<Point> cellNeighbours;
 	private int cellQuantity;
 	private boolean periodicBoundaries;
-	private float timeStep;
-	private float length;
+	private double length;
 
 	static {
 		cellNeighbours = new LinkedList<Point>();
@@ -26,11 +25,10 @@ public class OptimizedRoute implements Route {
 		cellNeighbours.add(new Point(1, -1));
 	}
 
-	public OptimizedRoute(int cellQuantity, boolean periodicBoundaries, float timeStep, float length) {
+	public OptimizedRoute(int cellQuantity, boolean periodicBoundaries, double length) {
 		super();
 		this.cellQuantity = cellQuantity;
 		this.periodicBoundaries = periodicBoundaries;
-		this.timeStep = timeStep;
 		this.length = length;
 	}
 
@@ -41,7 +39,7 @@ public class OptimizedRoute implements Route {
 
 			if (position != null) {
 				Cell cell = matrix.getCell(position);
-				particle.fillNeightbours(cell.getParticles(), interactionRadio, timeStep, periodicBoundaries, length,
+				particle.fillNeightbours(cell.getParticles(), interactionRadio, periodicBoundaries, length,
 						cellQuantity);
 			}
 		}

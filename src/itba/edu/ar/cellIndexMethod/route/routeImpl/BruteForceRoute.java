@@ -24,7 +24,7 @@ public class BruteForceRoute implements Route{
 	public void fillNeightbours(int x, int y, IndexMatrix matrix, Particle particle, float interactionRadio) {
 			Point position = getPosition(x, y);
 			Cell cell = matrix.getCell(position);
-			particle.fillNeightbours(cell.getParticles(), interactionRadio,timeStep, false, length, cellQuantity);
+			particle.fillNeightbours(cell.getParticles(), interactionRadio, false, length, cellQuantity);
 	}
 
 	private Point getPosition(int x, int y) {
