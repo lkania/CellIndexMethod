@@ -33,7 +33,7 @@ public class OptimizedRoute implements Route {
 	}
 
 	@Override
-	public void fillNeightbours(int x, int y, IndexMatrix matrix, Particle particle, float interactionRadio) {
+	public void fillNeightbours(int x, int y, IndexMatrix matrix, Particle particle, double interactionRadio) {
 		for (Point increment : cellNeighbours) {
 			Point position = getPosition(x, y, increment, matrix);
 

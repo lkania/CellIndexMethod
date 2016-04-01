@@ -14,7 +14,7 @@ public class ParticleState {
 	}
 
 	public ParticleState() {
-		this(0,0,0,0.03);
+		this(0,0,0,0);
 	}
 
 	public FloatPoint getPosition() {
@@ -29,7 +29,7 @@ public class ParticleState {
 		return angle;
 	}
 
-	public void setPosition(float x, float y) {
+	public void setPosition(double x, double y) {
 		position = new FloatPoint(x,y);
 	}
 	
@@ -43,6 +43,10 @@ public class ParticleState {
 
 	public void setPosition(FloatPoint newPosition) {
 		this.position=newPosition;
+	}
+
+	public FloatPoint getVelocity() {
+		return new FloatPoint(Math.cos(angle)*velocityAbs,Math.sin(angle)*velocityAbs);
 	}
 
 	

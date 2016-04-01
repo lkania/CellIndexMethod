@@ -21,7 +21,7 @@ public class BruteForceRoute implements Route{
 	}
 
 	@Override
-	public void fillNeightbours(int x, int y, IndexMatrix matrix, Particle particle, float interactionRadio) {
+	public void fillNeightbours(int x, int y, IndexMatrix matrix, Particle particle, double interactionRadio) {
 			Point position = getPosition(x, y);
 			Cell cell = matrix.getCell(position);
 			particle.fillNeightbours(cell.getParticles(), interactionRadio, false, length, cellQuantity);

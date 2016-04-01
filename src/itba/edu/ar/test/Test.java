@@ -44,7 +44,7 @@ public class Test {
 
 		for (Integer particleQuantity : particleQuantities) {
 			CellIndexMethodFileGenerator cmfg = new CellIndexMethodFileGenerator(length, particleQuantity, radio, path,
-					timeStep);
+					timeStep,0);
 			cmfg.generate(staticPaths, dynamicPaths);
 		}
 

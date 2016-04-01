@@ -7,6 +7,7 @@ public class FloatPoint {
 
 	public FloatPoint(double x, double y) {
 		super();
+		
 		this.x = x;
 		this.y = y;
 	}
@@ -38,6 +39,10 @@ public class FloatPoint {
 
 	public FloatPoint plus(double length) {
 		return this.plus(new FloatPoint(length,length));
+	}
+
+	public double abs() {
+		return Math.hypot(x, y);
 	}
 	
 

@@ -11,11 +11,11 @@ public class CellIndexMethod {
 
 	private IndexMatrix matrix;
 	private Route route;
-	private float interactionRadio;
-	private float radio;
+	private double interactionRadio;
+	private double radio;
 	private List<CellIndexMethodObserver> subscribers = new LinkedList<CellIndexMethodObserver>();
 
-	public CellIndexMethod(IndexMatrix matrix, Route route, float interactionRadio,float radio) {
+	public CellIndexMethod(IndexMatrix matrix, Route route, double interactionRadio,double radio) {
 		this.matrix = matrix;
 		this.route = route;
 		this.interactionRadio = interactionRadio;

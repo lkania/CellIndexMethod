@@ -34,7 +34,7 @@ public class Particle {
 		return radio;
 	}
 
-	public void fillNeightbours(List<Particle> particles, float interactionRadio,boolean periodic,double length,int cellQuantity) {
+	public void fillNeightbours(List<Particle> particles, double interactionRadio,boolean periodic,double length,int cellQuantity) {
 
 		for (Particle particle : particles)
 			if (isNeightbour(particle, interactionRadio,periodic,length,cellQuantity)) {
@@ -51,7 +51,7 @@ public class Particle {
 		neightbours.add(particle);
 	}
 
-	public boolean isNeightbour(Particle particle, float interactionRadio, boolean periodic,
+	public boolean isNeightbour(Particle particle, double interactionRadio, boolean periodic,
 			double length, int cellQuantity) {
 		return !this.equals(particle)
 				&& (distance(getPosition(), particle.getPosition(), length, periodic, cellQuantity)
@@ -133,7 +133,12 @@ public class Particle {
 	}
 
 	public void setVelocityAbs(double vx, double vy) {
+		state.setAngle(Math.atan2(vy,vx));
 		state.setVelocityAbs(Math.hypot(vx, vy));
+	}
+
+	public FloatPoint getVelocity() {
+		return state.getVelocity();
 	}
 
 }
