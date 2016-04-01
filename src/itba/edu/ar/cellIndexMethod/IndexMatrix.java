@@ -14,35 +14,32 @@ public class IndexMatrix {
 	private int cellQuantity;
 	private float timeStep;
 	private float length;
-	private List<Particle> particles; 
-	
-	public IndexMatrix(int cellQuantity, float timeStep, float length) throws InstantiationException, IllegalAccessException {
-		matrix = new Matrix<Cell>(cellQuantity, cellQuantity,Cell.class);
+	private List<Particle> particles;
+
+	public IndexMatrix(int cellQuantity, float timeStep, float length)
+			throws InstantiationException, IllegalAccessException {
+		matrix = new Matrix<Cell>(cellQuantity, cellQuantity, Cell.class);
 		this.timeStep = timeStep;
 		this.length = length;
-		this.cellQuantity=cellQuantity;
+		this.cellQuantity = cellQuantity;
 	}
 
 	public void addParticles(List<Particle> particles) {
 		for (Particle particle : particles) {
-			Point position = round(particle.getPosition(timeStep));
+			Point position = round(particle.getPosition());
 			Cell cell = getCell(position);
 			cell.add(particle);
 		}
-		this.particles=particles;
+		this.particles = particles;
 	}
 
 	public int getCellQuantity() {
 		return cellQuantity;
 	}
 
-	public void setCellQuantity(int cellQuantity) {
-		this.cellQuantity = cellQuantity;
-	}
-
 	private Point round(FloatPoint position) {
-		int x = (int) (position.getX() / (length/cellQuantity));
-		int y = (int) (position.getY() /  (length/cellQuantity));
+		int x = (int) (position.getX() / (length / cellQuantity));
+		int y = (int) (position.getY() / (length / cellQuantity));
 		return new Point(x, y);
 	}
 
@@ -61,9 +58,18 @@ public class IndexMatrix {
 	public List<Particle> getParticles() {
 		return particles;
 	}
-	
-	public boolean insideBoundaries(int x,int y){
+
+	public boolean insideBoundaries(int x, int y) {
 		return matrix.insideBoundaries(x, y);
+	}
+
+	public void reset() {
+		for (Particle particle : particles)
+			particle.resetNeightbours();
+	}
+
+	public void clear() throws InstantiationException, IllegalAccessException {
+		matrix.clear();
 	}
 
 }

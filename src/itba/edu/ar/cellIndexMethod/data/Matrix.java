@@ -8,20 +8,16 @@ public class Matrix<T> {
 	private List<List<T>> matrix;
 	private int xSize;
 	private int ySize;
+	private Class<T> classT;
 	
-	public Matrix(int xSize,int ySize,Class<T> classT) throws InstantiationException, IllegalAccessException{
-		matrix = new ArrayList<List<T>>(xSize);
-		for(int x=0;x<xSize;x++)
-		{
-			matrix.add(x, new ArrayList<T>(ySize));
-			for(int y=0;y<ySize;y++)
-				matrix.get(x).add(classT.newInstance());
-		}
-		this.xSize=xSize;
-		this.ySize=ySize;
-		
+	public Matrix(int xSize, int ySize, Class<T> classT) throws InstantiationException, IllegalAccessException {
+		super();
+		this.xSize = xSize;
+		this.ySize = ySize;
+		this.classT = classT;
+		clear();
 	}
-	
+
 	public T get(int x,int y){
 		return matrix.get(x).get(y);
 	}
@@ -45,6 +41,16 @@ public class Matrix<T> {
 
 	public boolean exist(Point position) {
 		return exist((int)position.getX(),(int)position.getY());
+	}
+
+	public void clear() throws InstantiationException, IllegalAccessException {
+		matrix = new ArrayList<List<T>>(xSize);
+		for(int x=0;x<xSize;x++)
+		{
+			matrix.add(x, new ArrayList<T>(ySize));
+			for(int y=0;y<ySize;y++)
+				matrix.get(x).add(classT.newInstance());
+		}
 	}
 	
 }

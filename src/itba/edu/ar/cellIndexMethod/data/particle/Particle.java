@@ -1,23 +1,20 @@
 package itba.edu.ar.cellIndexMethod.data.particle;
 
-import java.awt.Point;
-import java.awt.geom.Point2D;
-import java.util.HashMap;
-import java.util.LinkedList;
+import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
+import java.util.Set;
 
 public class Particle {
 
 	private int id;
-	 
-	private Map<Float,ParticleState> states = new HashMap<Float,ParticleState>();
-	
+
+	private ParticleState state = new ParticleState();
+
 	private float color;
 	private float radio;
-	private float velocity;
-	private List<ParticleObserver> subscribers = new LinkedList<ParticleObserver>();
-	
+
+	private Set<Particle> neightbours = new HashSet<Particle>();
+
 	public Particle(int id, float radio, float color) {
 		super();
 		this.id = id;
@@ -25,8 +22,8 @@ public class Particle {
 		this.radio = radio;
 	}
 
-	public FloatPoint getPosition(float timeStep) {
-		return states.get(timeStep).getPosition();
+	public FloatPoint getPosition() {
+		return state.getPosition();
 	}
 
 	public float getColor() {
@@ -37,44 +34,51 @@ public class Particle {
 		return radio;
 	}
 
-	public void getNeightbours(List<Particle> particles, float interactionRadio, float timeStep) {
+	public void fillNeightbours(List<Particle> particles, double interactionRadio,boolean periodic,double length,int cellQuantity) {
 
 		for (Particle particle : particles)
-			if (isNeightbour(particle, interactionRadio, timeStep))
-			{
-				notifyNeightbour(particle);
+			if (isNeightbour(particle, interactionRadio,periodic,length,cellQuantity)) {
+				addNeightbour(particle);
+				particle.addNeightbour(this);
 			}
-
 	}
 
-	private void notifyNeightbour(Particle particle) {
-		for(ParticleObserver subscriber : subscribers)
-			subscriber.neighbour(this, particle);
+	public Set<Particle> getNeightbours() {
+		return neightbours;
 	}
+
+	private void addNeightbour(Particle particle) {
+		neightbours.add(particle);
+	}
+
+	public boolean isNeightbour(Particle particle, double interactionRadio, boolean periodic,
+			double length, int cellQuantity) {
+		return !this.equals(particle)
+				&& (distance(getPosition(), particle.getPosition(), length, periodic, cellQuantity)
+						- getRadio() - particle.getRadio()) < interactionRadio;
+	}
+
+	private double distance(FloatPoint p1, FloatPoint p2, double length, boolean periodic, int cellQuantity) {
+
+		double distanceX = Math.abs(p1.getX() - p2.getX());
+		double distanceY = Math.abs(p1.getY() - p2.getY());
+		double lengthX = 0;
+		double lengthY = 0;
+
+		if (periodic) {
+			if (distanceX > length / cellQuantity)
+				lengthX = length;
+			if (distanceY > length / cellQuantity)
+				lengthY = length;
+
+		}
+
+		double distance = Math.hypot(lengthX - distanceX, lengthY - distanceY);
+
+		return distance;
+	}
+
 	
-	public void subscribe(ParticleObserver susbcriber){
-		subscribers.add(susbcriber);
-	}
-
-	public boolean isNeightbour(Particle particle, float interactionRadio,float timeStep) {
-		return !this.equals(particle) && (distance(getPosition(timeStep), particle.getPosition(timeStep)) - getRadio() - particle.getRadio()) < interactionRadio;
-	}
-
-	private double distance(FloatPoint p1, FloatPoint p2) {
-		return Math.hypot(p1.getX() - p2.getX(), p1.getY() - p2.getY());
-	}
-
-	public float getVelocity() {
-		return velocity;
-	}
-
-	public void setVelocity(float velocity) {
-		this.velocity = velocity;
-	}
-	
-	public void addParticleState(float x,float y, float velocityX, float velocityY, float timeStep){
-		states.put(timeStep, new ParticleState(x, y, velocityX, velocityY));
-	}
 
 	@Override
 	public int hashCode() {
@@ -98,35 +102,43 @@ public class Particle {
 		return true;
 	}
 
-	public void addPosition(float x, float y, float timeStep) {
-		if(!states.containsKey(timeStep))
-		{
-			addParticleState(x,y,0,0,timeStep);
-			return;
-		}
-		
-		states.get(timeStep).setPosition(x,y);
-	}
-
-	public void addVelocity(float velocityX, float velocityY, float timeStep) {
-		if(!states.containsKey(timeStep))
-		{
-			addParticleState(0,0,velocityX,velocityY,timeStep);
-			return;
-		}
-		
-		states.get(timeStep).setVelocity(velocityX, velocityY);;
-	}
-
 	public int getId() {
 		return id;
 	}
 
-	public void unsubscribe(ParticleObserver subscriber) {
-		subscribers.remove(subscriber);
+	public void resetNeightbours() {
+		neightbours.clear();
 	}
 
+	public double getAngle() {
+		return state.getAngle();
+	}
+
+	public double getVelocityAbs() {
+		return state.getVelocityAbs();
+	}
+
+	public void setPosition(FloatPoint newPosition) {
+		state.setPosition(newPosition);
 		
-	
+	}
+
+	public void setAngle(Double angle) {
+		state.setAngle(angle);
+	}
+
+	public void setPosition(double x, double y) {
+		state.setPosition(new FloatPoint(x,y));
+		
+	}
+
+	public void setVelocityAbs(double vx, double vy) {
+		state.setAngle(Math.atan2(vy,vx));
+		state.setVelocityAbs(Math.hypot(vx, vy));
+	}
+
+	public FloatPoint getVelocity() {
+		return state.getVelocity();
+	}
 
 }

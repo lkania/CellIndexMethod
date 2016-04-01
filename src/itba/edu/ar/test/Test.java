@@ -6,6 +6,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 import itba.edu.ar.input.file.CellIndexMethodFileGenerator;
+import itba.edu.ar.output.FileOutputNeightbours;
+import itba.edu.ar.output.FileOutputStressTest;
 
 public class Test {
 
@@ -18,15 +20,11 @@ public class Test {
 	private float interactionRadio;
 	private int timesPerSimulation;
 
-	private static List<Integer> particleQuantities;
-	private static List<Integer> cellQuantities;
+	private List<Integer> particleQuantities;
+	private List<Integer> cellQuantities;
 
-	static {
-		particleQuantities = getIntegerList(100, 200, 100);
-		cellQuantities = getIntegerList(1, 19, 1);
-	}
-
-	public Test(Float length, float radio, int timeStep, float interactionRadio, int timesPerSimulation, String path) {
+	public Test(Float length, float radio, int timeStep, float interactionRadio, int timesPerSimulation,
+			int fromParticleQuantity, int stepParticleQuantity, int toParticleQuantity, String path) {
 		super();
 		this.length = length;
 		this.path = path;
@@ -34,27 +32,41 @@ public class Test {
 		this.timeStep = timeStep;
 		this.interactionRadio = interactionRadio;
 		this.timesPerSimulation = timesPerSimulation;
+		particleQuantities = getIntegerListPlusStep(fromParticleQuantity, toParticleQuantity, stepParticleQuantity);
+		cellQuantities = getIntegerListPlusStep(1, getMaxCellQuantity(), 1);
+	}
+
+	private int getMaxCellQuantity() {
+		return (int) Math.ceil(length / (interactionRadio + 2 * radio)) - 1;
 	}
 
 	public void executeTest() throws IOException, InstantiationException, IllegalAccessException {
 
 		for (Integer particleQuantity : particleQuantities) {
 			CellIndexMethodFileGenerator cmfg = new CellIndexMethodFileGenerator(length, particleQuantity, radio, path,
-					timeStep);
+					timeStep,0);
 			cmfg.generate(staticPaths, dynamicPaths);
-
 		}
 
-		CellIndexMethodStressTest st = new CellIndexMethodStressTest(particleQuantities, cellQuantities,
-				path+"neightbours", path+"stressTest", staticPaths, dynamicPaths, timeStep, interactionRadio,
-				timesPerSimulation);
+		CellIndexMethodTest st = new CellIndexMethodTest(particleQuantities, cellQuantities, staticPaths, dynamicPaths,
+				timeStep, interactionRadio, timesPerSimulation, radio);
 
+		st.subscribe(new FileOutputStressTest(path + "stressTest"));
+		st.subscribe(new FileOutputNeightbours(path));
 		st.start();
 	}
 
-	private static List<Integer> getIntegerList(int from, int to, int step) {
+	private static List<Integer> getIntegerListPlusStep(int from, int to, int step) {
 		List<Integer> ans = new LinkedList<Integer>();
 		for (int i = from; i <= to; i = i + step) {
+			ans.add(i);
+		}
+		return ans;
+	}
+
+	private static List<Integer> getIntegerListMultiplyStep(int from, int to, int step) {
+		List<Integer> ans = new LinkedList<Integer>();
+		for (int i = from; i <= to; i = i * step) {
 			ans.add(i);
 		}
 		return ans;

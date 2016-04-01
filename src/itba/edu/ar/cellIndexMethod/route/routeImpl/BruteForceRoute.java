@@ -1,28 +1,30 @@
 package itba.edu.ar.cellIndexMethod.route.routeImpl;
 
 import java.awt.Point;
-import java.util.Map;
-import java.util.Set;
 
 import itba.edu.ar.cellIndexMethod.IndexMatrix;
 import itba.edu.ar.cellIndexMethod.data.Cell;
 import itba.edu.ar.cellIndexMethod.data.particle.Particle;
+import itba.edu.ar.cellIndexMethod.route.Route;
 
-public class BruteForceRoute extends AbstractRoute{
+public class BruteForceRoute implements Route{
 
 	private float timeStep;
-
-	public BruteForceRoute(float timeStep) {
+	private float length;
+	private int cellQuantity;
+		
+	public BruteForceRoute(float timeStep, float length, int cellQuantity) {
+		super();
 		this.timeStep = timeStep;
+		this.length = length;
+		this.cellQuantity = cellQuantity;
 	}
 
 	@Override
-	public void fillNeightbours(int x, int y, IndexMatrix matrix, Particle particle, float interactionRadio) {
+	public void fillNeightbours(int x, int y, IndexMatrix matrix, Particle particle, double interactionRadio) {
 			Point position = getPosition(x, y);
 			Cell cell = matrix.getCell(position);
-			particle.subscribe(this);
-			particle.getNeightbours(cell.getParticles(), interactionRadio,timeStep);
-			particle.unsubscribe(this);
+			particle.fillNeightbours(cell.getParticles(), interactionRadio, false, length, cellQuantity);
 	}
 
 	private Point getPosition(int x, int y) {
@@ -32,12 +34,6 @@ public class BruteForceRoute extends AbstractRoute{
 		return new Point(newX, newY);
 	}
 
-	@Override
-	public void neighbour(Particle particle1, Particle particle2) {
-		maybeAddEntry(particle1);
-		allNeightbours.get(particle1).add(particle2);
-	}
 
-	
 
 }

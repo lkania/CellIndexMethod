@@ -8,7 +8,7 @@ import itba.edu.ar.cellIndexMethod.data.particle.Particle;
 
 public interface CellIndexMethodObserver {
 
-	public void stepEnded(Map<Particle,Set<Particle>> allNeightbours);
+	public void stepEnded();
 	public void stepStarted();
 	
 }
