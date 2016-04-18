@@ -33,10 +33,13 @@ public class DynamicInterpreter extends FileInterpreter implements Interpreter {
 	private void particlesProperties(int i, String line) {
 		Scanner scanner = getScanner(line);
 		Particle particle = particles.get(particleIndex(i));
-		particle.setPosition(scientificNotationToFloat(scanner.next()),scientificNotationToFloat(scanner.next()));
+		double positionX = scientificNotationToFloat(scanner.next());
+		double positionY = scientificNotationToFloat(scanner.next());
+		
+		particle.setPosition(positionX,positionY);
 		
 		if(scanner.hasNext())
-			particle.setVelocityAbs(scanner.nextFloat(),scanner.nextFloat());
+			particle.setVelocity(scientificNotationToFloat(scanner.next()),scientificNotationToFloat(scanner.next()));
 		
 	}
 	

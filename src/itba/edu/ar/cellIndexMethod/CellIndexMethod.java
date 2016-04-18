@@ -15,18 +15,25 @@ public class CellIndexMethod {
 	private double radio;
 	private List<CellIndexMethodObserver> subscribers = new LinkedList<CellIndexMethodObserver>();
 
-	public CellIndexMethod(IndexMatrix matrix, Route route, double interactionRadio,double radio) {
+	public CellIndexMethod(IndexMatrix matrix, Route route, double interactionRadio, double radio) {
 		this.matrix = matrix;
 		this.route = route;
 		this.interactionRadio = interactionRadio;
-		this.radio=radio;
-		if (!satisfyConstraint())
-			throw new IllegalStateException();
+		this.radio = radio;
 
+		// If we only have one cell, then we want to do brute force, therefore
+		// the constraint doesn't have sense
+		if (matrix.getCellQuantity() != 1 && !satisfyConstraint())
+			throw new IllegalStateException();
 	}
 
+	public CellIndexMethod(IndexMatrix matrix, Route route, double interactionRadio) {
+		this(matrix, route, interactionRadio, 0);
+	}
+
+	// Limit case where each particle is in one side of the cell
 	private boolean satisfyConstraint() {
-		return (matrix.getLength() / matrix.getCellQuantity()-2*radio) > interactionRadio;
+		return (matrix.getLength() / matrix.getCellQuantity() - 2 * radio) > interactionRadio;
 	}
 
 	public void execute() {

@@ -13,10 +13,10 @@ public class IndexMatrix {
 	private Matrix<Cell> matrix;
 	private int cellQuantity;
 	private float timeStep;
-	private float length;
+	private double length;
 	private List<Particle> particles;
 
-	public IndexMatrix(int cellQuantity, float timeStep, float length)
+	public IndexMatrix(int cellQuantity, float timeStep, double length)
 			throws InstantiationException, IllegalAccessException {
 		matrix = new Matrix<Cell>(cellQuantity, cellQuantity, Cell.class);
 		this.timeStep = timeStep;
@@ -26,6 +26,7 @@ public class IndexMatrix {
 
 	public void addParticles(List<Particle> particles) {
 		for (Particle particle : particles) {
+
 			Point position = round(particle.getPosition());
 			Cell cell = getCell(position);
 			cell.add(particle);
@@ -51,7 +52,7 @@ public class IndexMatrix {
 		return matrix.get(x, y);
 	}
 
-	public float getLength() {
+	public double getLength() {
 		return length;
 	}
 

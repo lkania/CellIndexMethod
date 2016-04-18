@@ -8,27 +8,53 @@ import java.nio.file.Paths;
 import java.util.LinkedList;
 import java.util.List;
 
-public class StaticFileGenerator {
+import itba.edu.ar.input.file.data.StaticFileData;
 
+public class StaticFileGenerator extends FileGenerator{
 
+	private static final double COLOR = 1;
+	private static final String SEPARATOR = " ";
 
-	public static void generate(List<String> staticPaths, double length, int particleQuantity, double radio, String path) {
+	public static void generate(List<String> staticPaths, double length, int particleQuantity, double radio,
+			String path) {
+		generate(staticPaths, length, particleQuantity, radio, 0, path);
+	}
+
+	public static void generate(List<String> staticPaths, double length, int particleQuantity, double radio,
+			double mass, String path) {
+
+		List<StaticFileData> staticFileDatas = new LinkedList<>();
+		staticFileDatas.add(new StaticFileData(particleQuantity, mass, radio));
+
+		staticPaths.add(generate(length, staticFileDatas, path));
+
+	}
+
+	public static String generate(double length, List<StaticFileData> staticFileDatas, String path) {
 		List<String> file = new LinkedList<String>();
-		file.add(particleQuantity+"");
-		file.add(length+"");
+		int particleQuantity = getTotalParticleQuantity(staticFileDatas);
+		file.add(particleQuantity + "");
+		file.add(length + "");
 
-		for (int i = 0; i < particleQuantity; i++) {
-			file.add(radio + " " + 1);
+		StringBuilder sb = new StringBuilder();
+
+		for (StaticFileData data : staticFileDatas) {
+			for (int i = 0; i < data.getParticleQuantity(); i++) {
+				sb.append(data.getRadio()).append(SEPARATOR).append(COLOR).append(SEPARATOR).append(data.getMass());
+				file.add(sb.toString());
+				sb = new StringBuilder();
+			}
 		}
-
+		String finalPath = path + "Static" + particleQuantity;
 		try {
-			String finalPath = path+"Static"+particleQuantity;
-			staticPaths.add(finalPath);
 			Files.write(Paths.get(finalPath), file, Charset.forName("UTF-8"));
 		} catch (IOException e) {
 			throw new IllegalAccessError();
 		}
 
+		return finalPath;
 	}
+
+	
 
 }

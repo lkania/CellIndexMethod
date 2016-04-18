@@ -29,7 +29,7 @@ public class StaticInterpreter extends FileInterpreter implements Interpreter{
 
 	private void particleProperties(int i, String line) {
 		Scanner scanner = getScanner(line);
-		particles.add(new Particle(i-1,scanner.nextFloat(),scanner.nextFloat()));
+		particles.add(new Particle(i-1,scanner.nextDouble(),scanner.nextDouble(),scanner.nextDouble()));
 	}
 
 	private void lenght(String line) {

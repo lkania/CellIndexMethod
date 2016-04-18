@@ -53,7 +53,7 @@ public class CellIndexMethodTest {
 						timeStep);
 				notifyState(cellQuantity, indexMatrix.getParticles());
 
-				CellIndexMethod cellIndexMethod = new CellIndexMethod(indexMatrix, getRoute(cellQuantity, timeStep,indexMatrix.getLength()),
+				CellIndexMethod cellIndexMethod = new CellIndexMethod(indexMatrix, getRoute(cellQuantity,indexMatrix.getLength()),
 						interactionRadio,radio);
 
 				subscribeSubscribers(cellIndexMethod);
@@ -104,8 +104,8 @@ public class CellIndexMethodTest {
 			subscriber.state(cellQuantity, particles);
 	}
 
-	private static Route getRoute(int cellQuantity, int timeStep,float length) {
-		return (cellQuantity == 1) ? new BruteForceRoute(timeStep,length,cellQuantity) : new OptimizedRoute(cellQuantity, true,length);
+	private static Route getRoute(int cellQuantity, double length) {
+		return (cellQuantity == 1) ? new BruteForceRoute(length) : new OptimizedRoute(cellQuantity, true,length);
 
 	}
 

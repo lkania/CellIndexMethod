@@ -44,6 +44,14 @@ public class FloatPoint {
 	public double abs() {
 		return Math.hypot(x, y);
 	}
+
+	public double multiply(FloatPoint fp) {
+		return this.getX()*fp.getX()+this.getY()*fp.getY();
+	}
+	
+	public double distance(FloatPoint fp){
+		return Math.hypot(getX()-fp.getX(), getY()-fp.getY());
+	}
 	
 
 }
