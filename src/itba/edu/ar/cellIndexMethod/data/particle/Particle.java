@@ -6,8 +6,10 @@ import java.util.Set;
 
 public class Particle {
 
+	private static int maxId = 0;
+	
 	private int id;
-
+	
 	private ParticleState state = new ParticleState();
 
 	private double color;
@@ -15,22 +17,37 @@ public class Particle {
 	private double mass;
 
 	private Set<Particle> neightbours = new HashSet<Particle>();
-
 	
 	public Particle(int id, double radio, double color) {
 		super();
-		this.id = id;
+		setId(id);
 		this.color = color;
 		this.radio = radio;
 		this.mass = 0;
 	}
 
+
 	public Particle(int id, double radio, double color, double mass) {
 		super();
-		this.id = id;
+		setId(id);
 		this.color = color;
 		this.radio = radio;
 		this.mass = mass;
+	}
+
+	public Particle(double mass,FloatPoint position,FloatPoint velocity) {
+		super();
+		setId(maxId+1);
+		this.color = 0;
+		this.radio = 0;
+		this.mass = mass;
+		this.state.setPosition(position);
+		setVelocity(velocity);;
+	}
+	
+	private void setId(int id) {
+		maxId = Math.max(maxId, id);
+		this.id=id;
 	}
 
 	public FloatPoint getPosition() {
@@ -94,9 +111,9 @@ public class Particle {
 		return distance;
 	}
 
-
-	
-	
+	public double distance(Particle particle) {
+		return getPosition().distance(particle.getPosition());
+	}
 
 	@Override
 	public int hashCode() {
@@ -167,6 +184,10 @@ public class Particle {
 	public void setPosition(double x, double y) {
 		state.setPosition(new FloatPoint(x, y));
 
+	}
+
+	public void setVelocity(FloatPoint newVelocity) {
+		setVelocity(newVelocity.getX(), newVelocity.getY());
 	}
 
 	public void setVelocity(double vx, double vy) {

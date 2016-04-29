@@ -2,7 +2,7 @@ package itba.edu.ar.input.file;
 
 import java.util.List;
 
-import itba.edu.ar.input.file.data.StaticFileData;
+import itba.edu.ar.input.file.data.Data;
 
 public class CellIndexMethodFileGenerator {
 
@@ -23,7 +23,7 @@ public class CellIndexMethodFileGenerator {
 		this.velocityAbs=velocityAbs;
 	}
 
-	public static void generate(List<String> staticPaths,List<String> dynamicPaths,double length, List<StaticFileData> staticFileDatas, String path
+	public static void generate(List<String> staticPaths,List<String> dynamicPaths,double length, List<Data> staticFileDatas, String path
 			) {
 		staticPaths.add(StaticFileGenerator.generate(length, staticFileDatas, path));
 		DynamicFileGenerator dfg = new DynamicFileGenerator();

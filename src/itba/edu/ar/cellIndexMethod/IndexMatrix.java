@@ -12,11 +12,11 @@ public class IndexMatrix {
 
 	private Matrix<Cell> matrix;
 	private int cellQuantity;
-	private float timeStep;
+	private double timeStep;
 	private double length;
 	private List<Particle> particles;
 
-	public IndexMatrix(int cellQuantity, float timeStep, double length)
+	public IndexMatrix(int cellQuantity, double timeStep, double length)
 			throws InstantiationException, IllegalAccessException {
 		matrix = new Matrix<Cell>(cellQuantity, cellQuantity, Cell.class);
 		this.timeStep = timeStep;

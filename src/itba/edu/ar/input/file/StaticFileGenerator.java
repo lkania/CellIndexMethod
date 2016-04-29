@@ -8,7 +8,7 @@ import java.nio.file.Paths;
 import java.util.LinkedList;
 import java.util.List;
 
-import itba.edu.ar.input.file.data.StaticFileData;
+import itba.edu.ar.input.file.data.Data;
 
 public class StaticFileGenerator extends FileGenerator{
 
@@ -23,14 +23,14 @@ public class StaticFileGenerator extends FileGenerator{
 	public static void generate(List<String> staticPaths, double length, int particleQuantity, double radio,
 			double mass, String path) {
 
-		List<StaticFileData> staticFileDatas = new LinkedList<>();
-		staticFileDatas.add(new StaticFileData(particleQuantity, mass, radio));
+		List<Data> staticFileDatas = new LinkedList<>();
+		staticFileDatas.add(new Data(particleQuantity, mass, radio));
 
 		staticPaths.add(generate(length, staticFileDatas, path));
 
 	}
 
-	public static String generate(double length, List<StaticFileData> staticFileDatas, String path) {
+	public static String generate(double length, List<Data> staticFileDatas, String path) {
 		List<String> file = new LinkedList<String>();
 		int particleQuantity = getTotalParticleQuantity(staticFileDatas);
 		file.add(particleQuantity + "");
@@ -38,7 +38,7 @@ public class StaticFileGenerator extends FileGenerator{
 
 		StringBuilder sb = new StringBuilder();
 
-		for (StaticFileData data : staticFileDatas) {
+		for (Data data : staticFileDatas) {
 			for (int i = 0; i < data.getParticleQuantity(); i++) {
 				sb.append(data.getRadio()).append(SEPARATOR).append(COLOR).append(SEPARATOR).append(data.getMass());
 				file.add(sb.toString());

@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Set;
 
 import itba.edu.ar.cellIndexMethod.data.particle.FloatPoint;
-import itba.edu.ar.input.file.data.StaticFileData;
+import itba.edu.ar.input.file.data.Data;
 
 public class DynamicFileGenerator extends FileGenerator {
 
@@ -43,12 +43,12 @@ public class DynamicFileGenerator extends FileGenerator {
 
 	}
 
-	public String generate(double length, List<StaticFileData> staticFileDatas, String path) {
+	public String generate(double length, List<Data> staticFileDatas, String path) {
 		return generate(length, staticFileDatas, path, 0);
 
 	}
 
-	public String generate(double length, List<StaticFileData> staticFileDatas, String path, int times) {
+	public String generate(double length, List<Data> staticFileDatas, String path, int times) {
 		List<String> file = new LinkedList<String>();
 		times++;
 
@@ -56,12 +56,8 @@ public class DynamicFileGenerator extends FileGenerator {
 		for (int i = 0; i < times; i++) {
 			file.add("" + i);
 
-			for (StaticFileData data : staticFileDatas) {
+			for (Data data : staticFileDatas) {
 				for (int pq = 0; pq < data.getParticleQuantity(); pq++) {
-
-					double angle = getRandomAngle();
-					double vx = data.getVelocityAbs().getX() * Math.cos(angle);
-					double vy = data.getVelocityAbs().getY() * Math.sin(angle);
 
 					double positionX = 0;
 					double positionY = 0;
@@ -73,8 +69,10 @@ public class DynamicFileGenerator extends FileGenerator {
 						preParticle = new DynamicFileGeneratorParticle(new FloatPoint(positionX, positionY),data.getRadio());
 					}
 					positions.add(preParticle);
+					
+					FloatPoint velocity = data.getVelocity(positionX,positionY);
 
-					file.add(positionX + SEPARATOR + positionY + SEPARATOR + vx + SEPARATOR + vy);
+					file.add(positionX + SEPARATOR + positionY + SEPARATOR + velocity.getX() + SEPARATOR + velocity.getY());
 				}
 			}
 		}

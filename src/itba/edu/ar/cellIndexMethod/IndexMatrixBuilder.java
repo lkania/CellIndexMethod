@@ -11,7 +11,7 @@ import itba.edu.ar.parser.interpreter.StaticInterpreter;
 public class IndexMatrixBuilder {
 
 	public static IndexMatrix getIndexMatrix(String staticFilePath, String dynamicFilePath, int cellquantity,
-			float timeStep) throws IOException, InstantiationException, IllegalAccessException {
+			double timeStep) throws IOException, InstantiationException, IllegalAccessException {
 		StaticInterpreter staticInterpreter = new StaticInterpreter();
 		InfoParser.parse(staticFilePath, staticInterpreter);
 		Interpreter dynamicInterpreter = new DynamicInterpreter(staticInterpreter.getParticles());
