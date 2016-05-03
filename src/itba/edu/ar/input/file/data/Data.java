@@ -52,6 +52,10 @@ public class Data {
 	public FloatPoint getPosition(){
 		return position;
 	}
+
+	public double getPosition(double random) {
+		return random;
+	}
 	
 
 }

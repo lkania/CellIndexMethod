@@ -64,8 +64,8 @@ public class DynamicFileGenerator extends FileGenerator {
 					DynamicFileGeneratorParticle preParticle = null;
 
 					while (preParticle==null||positions.contains(preParticle)) {
-						positionX = getRandom(length - 2 * data.getRadio()) + data.getRadio();
-						positionY = getRandom(length - 2 * data.getRadio()) + data.getRadio();
+						positionX = data.getPosition(Math.random());
+						positionY = data.getPosition(Math.random());
 						preParticle = new DynamicFileGeneratorParticle(new FloatPoint(positionX, positionY),data.getRadio());
 					}
 					positions.add(preParticle);
@@ -94,5 +94,6 @@ public class DynamicFileGenerator extends FileGenerator {
 	private static double getRandom(double length) {
 		return Math.random() * length;
 	}
+	
 
 }
