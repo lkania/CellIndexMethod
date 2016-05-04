@@ -53,8 +53,8 @@ public class Data {
 		return position;
 	}
 
-	public double getPosition(double random) {
-		return random;
+	public FloatPoint getVelocity(FloatPoint position) {
+		return getVelocity(position.getX(), position.getY());
 	}
 	
 

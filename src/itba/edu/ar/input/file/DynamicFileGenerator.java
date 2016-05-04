@@ -59,20 +59,18 @@ public class DynamicFileGenerator extends FileGenerator {
 			for (Data data : staticFileDatas) {
 				for (int pq = 0; pq < data.getParticleQuantity(); pq++) {
 
-					double positionX = 0;
-					double positionY = 0;
+					FloatPoint position = null;
 					DynamicFileGeneratorParticle preParticle = null;
 
 					while (preParticle==null||positions.contains(preParticle)) {
-						positionX = data.getPosition(Math.random());
-						positionY = data.getPosition(Math.random());
-						preParticle = new DynamicFileGeneratorParticle(new FloatPoint(positionX, positionY),data.getRadio());
+						position = data.getPosition();
+						preParticle = new DynamicFileGeneratorParticle(position,data.getRadio());
 					}
 					positions.add(preParticle);
 					
-					FloatPoint velocity = data.getVelocity(positionX,positionY);
+					FloatPoint velocity = data.getVelocity(position);
 
-					file.add(positionX + SEPARATOR + positionY + SEPARATOR + velocity.getX() + SEPARATOR + velocity.getY());
+					file.add(position.getX() + SEPARATOR + position.getY() + SEPARATOR + velocity.getX() + SEPARATOR + velocity.getY());
 				}
 			}
 		}
