@@ -43,12 +43,12 @@ public class DynamicFileGenerator extends FileGenerator {
 
 	}
 
-	public String generate(double length, List<Data> staticFileDatas, String path) {
-		return generate(length, staticFileDatas, path, 0);
+	public String generate(List<Data> staticFileDatas, String path) {
+		return generate(staticFileDatas, path, 0);
 
 	}
 
-	public String generate(double length, List<Data> staticFileDatas, String path, int times) {
+	public String generate(List<Data> staticFileDatas, String path, int times) {
 		List<String> file = new LinkedList<String>();
 		times++;
 

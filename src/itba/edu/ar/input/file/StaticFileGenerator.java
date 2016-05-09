@@ -30,7 +30,7 @@ public class StaticFileGenerator extends FileGenerator{
 
 	}
 
-	public static String generate(double length, List<Data> staticFileDatas, String path) {
+	public static String generate(List<Data> staticFileDatas, String path) {
 		List<String> file = new LinkedList<String>();
 		int particleQuantity = getTotalParticleQuantity(staticFileDatas);
 		file.add(particleQuantity + "");

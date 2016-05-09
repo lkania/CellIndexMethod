@@ -23,11 +23,11 @@ public class CellIndexMethodFileGenerator {
 		this.velocityAbs=velocityAbs;
 	}
 
-	public static void generate(List<String> staticPaths,List<String> dynamicPaths,double length, List<Data> staticFileDatas, String path
+	public static void generate(List<String> staticPaths,List<String> dynamicPaths,List<Data> staticFileDatas, String path
 			) {
-		staticPaths.add(StaticFileGenerator.generate(length, staticFileDatas, path));
+		staticPaths.add(StaticFileGenerator.generate(staticFileDatas, path));
 		DynamicFileGenerator dfg = new DynamicFileGenerator();
-		dynamicPaths.add(dfg.generate(length, staticFileDatas,path));
+		dynamicPaths.add(dfg.generate(staticFileDatas,path));
 	}
 
 	public void generate(List<String> staticPaths,List<String> dynamicPaths) {
