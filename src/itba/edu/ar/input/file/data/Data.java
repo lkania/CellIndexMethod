@@ -57,5 +57,9 @@ public class Data {
 		return getVelocity(position.getX(), position.getY());
 	}
 	
-
+	public void setParticleQuantity(int particleQuantity) {
+		this.particleQuantity = particleQuantity;
+	}
+	
+	
 }

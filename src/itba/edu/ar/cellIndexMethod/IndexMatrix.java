@@ -7,6 +7,7 @@ import itba.edu.ar.cellIndexMethod.data.Cell;
 import itba.edu.ar.cellIndexMethod.data.Matrix;
 import itba.edu.ar.cellIndexMethod.data.particle.FloatPoint;
 import itba.edu.ar.cellIndexMethod.data.particle.Particle;
+import itba.edu.ar.cellIndexMethod.exception.ParticleOutOfSpace;
 
 public class IndexMatrix {
 
@@ -26,10 +27,14 @@ public class IndexMatrix {
 
 	public void addParticles(List<Particle> particles) {
 		for (Particle particle : particles) {
-
+			try{
+			particle.resetNeightbours();
 			Point position = round(particle.getPosition());
 			Cell cell = getCell(position);
 			cell.add(particle);
+		} catch (IndexOutOfBoundsException iobe){
+			throw new ParticleOutOfSpace(particle);
+		}
 		}
 		this.particles = particles;
 	}

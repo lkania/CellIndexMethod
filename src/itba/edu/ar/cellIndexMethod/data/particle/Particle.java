@@ -6,6 +6,7 @@ import java.util.Set;
 
 public class Particle {
 
+	
 	private static int maxId = 0;
 	
 	private int id;
@@ -33,6 +34,15 @@ public class Particle {
 		this.color = color;
 		this.radio = radio;
 		this.mass = mass;
+	}
+	public Particle(double mass,FloatPoint position,FloatPoint velocity, double radio) {
+		super();
+		setId(maxId+1);
+		this.color = 0;
+		this.radio = radio;
+		this.mass = mass;
+		this.state.setPosition(position);
+		setVelocity(velocity);;
 	}
 
 	public Particle(double mass,FloatPoint position,FloatPoint velocity) {
@@ -87,7 +97,7 @@ public class Particle {
 	public boolean isNeightbour(Particle particle, double interactionRadio, boolean periodic, double length,
 			int cellQuantity) {
 		return !this.equals(particle)
-				&& (distance(getPosition(), particle.getPosition(), length, periodic, cellQuantity) - getRadio()
+				&& (distance(getPosition(), particle.getPosition(), length, periodic, cellQuantity) - this.getRadio()
 						- particle.getRadio()) < interactionRadio;
 	}
 
@@ -197,6 +207,14 @@ public class Particle {
 
 	public FloatPoint getVelocity() {
 		return state.getVelocity();
+	}
+	
+	private static final Object _SEPARATOR_ = " ";
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("ID=").append(id).append(_SEPARATOR_).append("RADIO=").append(radio).append(_SEPARATOR_).append(state.getPosition());
+		return sb.toString();
 	}
 
 }

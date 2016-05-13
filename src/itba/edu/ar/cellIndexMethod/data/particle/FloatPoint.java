@@ -72,5 +72,5 @@ public class FloatPoint {
 	public FloatPoint getVersor() {
 		return this.divide(this.abs());
 	}
-
+	
 }

@@ -1,6 +1,7 @@
 package itba.edu.ar.input.file;
 
 import java.io.IOException;
+import java.nio.channels.AcceptPendingException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -15,6 +16,7 @@ import itba.edu.ar.input.file.data.Data;
 public class DynamicFileGenerator extends FileGenerator {
 
 	private static final String SEPARATOR = " ";
+	private static final int MAX_FAILS = 100;
 	private Set<DynamicFileGeneratorParticle> positions = new HashSet<DynamicFileGeneratorParticle>();
 
 	public static void generate(List<String> dynamicPaths, String path, int times, double length, int particleQuantity,
@@ -52,29 +54,41 @@ public class DynamicFileGenerator extends FileGenerator {
 		List<String> file = new LinkedList<String>();
 		times++;
 
-		int particleQuantity = getTotalParticleQuantity(staticFileDatas);
 		for (int i = 0; i < times; i++) {
 			file.add("" + i);
 
 			for (Data data : staticFileDatas) {
-				for (int pq = 0; pq < data.getParticleQuantity(); pq++) {
+				int fails=0;
+				for (int pq = 0; pq < data.getParticleQuantity() && fails<MAX_FAILS; pq++) {
 
 					FloatPoint position = null;
 					DynamicFileGeneratorParticle preParticle = null;
 
-					while (preParticle==null||positions.contains(preParticle)) {
+					boolean isNewParticle=true;
+					fails=0;
+					while (preParticle==null||!isNewParticle && fails<MAX_FAILS) {
 						position = data.getPosition();
+
 						preParticle = new DynamicFileGeneratorParticle(position,data.getRadio());
+						isNewParticle=!positions.contains(preParticle);
+						if(!isNewParticle)
+							fails++;
 					}
+					if(fails==MAX_FAILS)
+						break;
+					
 					positions.add(preParticle);
 					
 					FloatPoint velocity = data.getVelocity(position);
 
 					file.add(position.getX() + SEPARATOR + position.getY() + SEPARATOR + velocity.getX() + SEPARATOR + velocity.getY());
 				}
+				data.setParticleQuantity(positions.size());
 			}
+			
+			
 		}
-
+		int particleQuantity = getTotalParticleQuantity(staticFileDatas);
 		String finalPath = path + "Dynamic" + particleQuantity;
 		try {
 			Files.write(Paths.get(finalPath), file, Charset.forName("UTF-8"));

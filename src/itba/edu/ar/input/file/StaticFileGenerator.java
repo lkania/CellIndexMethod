@@ -26,11 +26,11 @@ public class StaticFileGenerator extends FileGenerator{
 		List<Data> staticFileDatas = new LinkedList<>();
 		staticFileDatas.add(new Data(particleQuantity, mass, radio));
 
-		staticPaths.add(generate(length, staticFileDatas, path));
+		staticPaths.add(generate(length,staticFileDatas, path));
 
 	}
-
-	public static String generate(List<Data> staticFileDatas, String path) {
+	
+	public static String generate(double length,List<Data> staticFileDatas, String path) {
 		List<String> file = new LinkedList<String>();
 		int particleQuantity = getTotalParticleQuantity(staticFileDatas);
 		file.add(particleQuantity + "");
